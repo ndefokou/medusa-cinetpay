@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: medusa-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: medusa
+  template:
+    metadata:
+      labels:
+        app: medusa
+    spec:
+      containers:
+      - name: medusa
+        image: <ndefokou>/medusa-app:latest
+        ports:
+        - containerPort: 3334
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: medusa-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: medusa-db
+  template:
+    metadata:
+      labels:
+        app: medusa-db
+    spec:
+      containers:
+      - name: medusa-db
+        image: postgres:13
+        env:
+        - name: arthur
+          value: "medusa"
+        - name: tarthur2.0
+          value: "medusa"
+        - name: My_postgres_database
+          value: "medusadb"
+        ports:
+        - containerPort: 5432

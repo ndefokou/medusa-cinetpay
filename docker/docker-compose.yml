@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3334:3334"
+    networks:
+      - medusa-network
+    depends_on:
+      - db
+
+  prometheus-exporter:
+    image: nginx:alpine
+    ports:
+      - "3344:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - medusa-network
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: Arthur
+      POSTGRES_PASSWORD: tarthur2.0
+      POSTGRES_DB: my_postgres_database
+    ports:
+      - "5432:5432"
+    networks:
+      - medusa-network
+
+networks:
+  medusa-network:
